@@ -9,7 +9,7 @@ Click and hold button 1 while turning potentiometer knob 2.
 Beat clock interval timer set by knob 2.  Output stops 
 when button is released.
 
-MidiShield
+    MidiShield
  -----------------
 | MidiOut MidiIn  |
 |                 | 
