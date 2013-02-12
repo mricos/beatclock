@@ -10,15 +10,15 @@ Beat clock interval timer set by knob 2.  Output stops
 when button is released.
 
 MidiShield
------------------
-| MidiOut MidiIN  |
+ -----------------
+| MidiOut MidiIn  |
 |                 | 
 | B3    B2    B1  |
 |                 |
 |  P1  P2         |
 |          L7 L6  |
 |                 |
--------------------
+ -----------------
 
 References:
 http://en.wikipedia.org/wiki/MIDI_beat_clock
