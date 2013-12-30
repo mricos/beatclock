@@ -39,7 +39,9 @@ byte note;
 byte velocity;
 int pot;
 int timePot;
-
+char buf[1024];
+//char tmpbuf[1024];
+  
 byte byte1;
 byte byte2;
 byte byte3;
@@ -74,13 +76,14 @@ void setup() {
   digitalWrite(STAT2,HIGH);
  
  //start serial with midi baudrate 31250 or 38400 for debugging
- Serial.begin(31250);     
-  //Serial.begin(38400); 
-  //Serial.println("MIDI Board");  
+ //Serial.begin(31250);     
+  Serial.begin(38400); 
+  Serial.println("MIDI Board");  
 }
 
 float curTime;
 float oldTime;
+float oldTimeView;
 float deltaTime;
 float targetPeriod;
 
@@ -102,11 +105,32 @@ int midiBeatClock(float period)
   
   return deltaTime;
 }
+int viewUpdate(char *buf, float period)
+{
+   
+  curTime = millis()/1.0;
+  char tmpbuf[1024];
+  memset(tmpbuf,NULL,1024);
+    
+  deltaTime = curTime-oldTimeView;
+  if(deltaTime > period)
+  {
+    Serial.write("dT (ms): ");
+    sprintf(tmpbuf,"%d",deltaTime*1000);
+    Serial.write(tmpbuf);
+    Serial.write(": ");
+    Serial.write(buf);
+   
+    
+  }
+  oldTimeView = curTime;
+  return deltaTime;
+}
 
 //loop: wait for serial data, and interpret the message
 void loop () {
 
-
+ 
   /* 
    // Button and knob test functions
    if(analogRead(KNOB1) > 512){ digitalWrite(STAT1,HIGH); }
@@ -141,10 +165,12 @@ void loop () {
   }
 
   if(button(BUTTON2))
-  {  
-    Serial.write(251);
+  { 
+    sprintf(buf,"\nButton2:status::pot1=%d\n",pot);
+    viewUpdate(buf,100);
     digitalWrite(STAT1,LOW);
-    while(button(BUTTON2));
+    //while(button(BUTTON2));
+    
     digitalWrite(STAT1,HIGH);
   }
   if(button(BUTTON1))
